@@ -1,7 +1,5 @@
 package space.swordfish.common.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.github.jasminb.jsonapi.DeserializationFeature;
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.ResourceConverter;
@@ -18,9 +16,6 @@ public class JsonTransformServiceImpl implements JsonTransformService {
 
     public JsonTransformServiceImpl(ResourceConverter converter) {
         this.converter = converter;
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
 
         converter.disableDeserializationOption(DeserializationFeature.REQUIRE_RESOURCE_ID);
     }

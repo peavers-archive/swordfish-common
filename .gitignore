@@ -122,4 +122,6 @@ docker-compose.yml
 /**/build
 /**/out
 /**/.DS_Store
-swordfish-root.iml
+*.iml
+json-transform/src/main/resources/
+json-transform/src/test/
