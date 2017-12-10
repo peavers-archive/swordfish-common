@@ -1,4 +1,4 @@
 rootProject.name = 'swordfish-common'
 
-include 'json-transform'
+include 'json'
 include 'notification'

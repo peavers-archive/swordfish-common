@@ -1,4 +1,4 @@
-package space.swordfish.common.services;
+package space.swordfish.common.json.services;
 
 import com.github.jasminb.jsonapi.DeserializationFeature;
 import com.github.jasminb.jsonapi.JSONAPIDocument;

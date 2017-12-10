@@ -1,5 +1,5 @@
 jar {
-    baseName = 'jon-transform'
+    baseName = 'json'
 }
 
 dependencies {
