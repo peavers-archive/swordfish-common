@@ -3,5 +3,5 @@ jar {
 }
 
 dependencies {
-    compile('com.github.jasminb:jsonapi-converter:0.8')
+
 }
