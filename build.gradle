@@ -44,6 +44,9 @@ subprojects {
 
     dependencies {
         compile('org.projectlombok:lombok')
+        compile('com.github.jasminb:jsonapi-converter:0.8')
+        compile('com.github.peavers:swordfish-common:-SNAPSHOT')
+
         compile('org.springframework.boot:spring-boot-starter-web')
     }
 

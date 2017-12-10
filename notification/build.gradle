@@ -4,6 +4,4 @@ jar {
 
 dependencies {
     compile('org.springframework.cloud:spring-cloud-aws-messaging')
-    compile('com.github.jasminb:jsonapi-converter:0.8')
-    compile('com.github.peavers:swordfish-common:-SNAPSHOT')
 }
