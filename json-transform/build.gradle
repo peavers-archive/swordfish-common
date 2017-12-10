@@ -1,0 +1,7 @@
+jar {
+    baseName = 'jon-transform'
+}
+
+dependencies {
+    compile('com.github.jasminb:jsonapi-converter:0.8')
+}
