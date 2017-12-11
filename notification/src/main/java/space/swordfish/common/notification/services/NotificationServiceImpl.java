@@ -14,20 +14,14 @@ import space.swordfish.common.notification.domain.Notification;
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-    private final QueueMessagingTemplate queueMessagingTemplate;
-    private final JsonTransformService jsonTransformService;
+    @Autowired
+    private QueueMessagingTemplate queueMessagingTemplate;
+
+    @Autowired
+    private JsonTransformService jsonTransformService;
 
     @Value("${queues.notificationEvents}")
     private String queue;
-
-    @Autowired
-    public NotificationServiceImpl(QueueMessagingTemplate queueMessagingTemplate,
-                                   AmazonSQSAsync amazonSQSAsync, JsonTransformService jsonTransformService) {
-        this.queueMessagingTemplate = queueMessagingTemplate;
-        this.jsonTransformService = jsonTransformService;
-
-        amazonSQSAsync.createQueueAsync(queue);
-    }
 
     @Override
     public void send(String channel, String event, String payload) {
