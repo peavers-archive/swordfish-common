@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import space.swordfish.common.json.services.JsonTransformService;
+import space.swordfish.common.json.services.JsonTransformServiceImpl;
 import space.swordfish.common.notification.domain.Notification;
-import space.swordfish.common.notification.services.JsonTransformService;
-import space.swordfish.common.notification.services.JsonTransformServiceImpl;
 
 @Configuration
 public class JsonTransformConfig {
