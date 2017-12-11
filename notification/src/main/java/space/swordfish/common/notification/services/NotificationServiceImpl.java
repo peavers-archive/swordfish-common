@@ -9,7 +9,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import space.swordfish.common.notification.domain.Notification;
-import space.swordfish.common.json.services.JsonTransformService;
 
 @Slf4j
 @Service

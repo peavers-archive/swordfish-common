@@ -4,5 +4,4 @@ jar {
 
 dependencies {
     compile('org.springframework.cloud:spring-cloud-aws-messaging')
-    compile 'com.github.peavers:swordfish-common:-SNAPSHOT'
 }
