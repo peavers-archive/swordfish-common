@@ -4,6 +4,7 @@ import com.github.jasminb.jsonapi.DeserializationFeature;
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.exceptions.DocumentSerializationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.List;
 @Component
 public class JsonTransformServiceImpl implements JsonTransformService {
 
+    @Autowired
     private ResourceConverter converter;
 
     public JsonTransformServiceImpl(ResourceConverter converter) {
