@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import space.swordfish.common.json.services.JsonTransformService;
 import space.swordfish.common.notification.domain.Notification;
 
 @Slf4j
-@Service
+@Component
 public class NotificationServiceImpl implements NotificationService {
 
     @Autowired

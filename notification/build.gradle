@@ -4,4 +4,6 @@ jar {
 
 dependencies {
     compile('org.springframework.cloud:spring-cloud-aws-messaging')
+
+    compile project(':json')
 }
