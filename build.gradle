@@ -48,9 +48,10 @@ subprojects {
     }
 
     dependencies {
+        compile('org.springframework:spring-context')
+
         compile('org.projectlombok:lombok')
         compile('com.github.jasminb:jsonapi-converter:0.8')
-        compile('org.springframework.boot:spring-boot-starter-web')
     }
 
     dependencyManagement {
