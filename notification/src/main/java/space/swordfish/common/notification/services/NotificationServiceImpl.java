@@ -8,7 +8,6 @@ import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
-import space.swordfish.common.json.services.JsonTransformService;
 import space.swordfish.common.notification.domain.Notification;
 
 @Slf4j
