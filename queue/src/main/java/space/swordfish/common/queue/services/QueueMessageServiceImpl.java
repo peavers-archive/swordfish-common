@@ -14,32 +14,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class QueueMessageServiceImpl implements QueueMessageService {
 
-	private final QueueMessagingTemplate queueMessagingTemplate;
+    @Autowired
+    private QueueMessagingTemplate queueMessagingTemplate;
 
-	private final AmazonSQSAsync amazonSQSAsync;
+    @Autowired
+    private AmazonSQSAsync amazonSQSAsync;
 
-	@Autowired
-	public QueueMessageServiceImpl(
-			@Qualifier("amazonSQSAsync") AmazonSQSAsync amazonSqs) {
-		this.amazonSQSAsync = amazonSqs;
-		this.queueMessagingTemplate = new QueueMessagingTemplate(amazonSqs);
-	}
+    @Override
+    public void send(String queue, String payload) {
+        amazonSQSAsync.createQueueAsync(queue,
+                new AsyncHandler<CreateQueueRequest, CreateQueueResult>() {
+                    @Override
+                    public void onError(Exception exception) {
 
-	@Override
-	public void send(String queue, String payload) {
-		amazonSQSAsync.createQueueAsync(queue,
-				new AsyncHandler<CreateQueueRequest, CreateQueueResult>() {
-					@Override
-					public void onError(Exception exception) {
+                    }
 
-					}
-
-					@Override
-					public void onSuccess(CreateQueueRequest request,
-							CreateQueueResult createQueueResult) {
-						queueMessagingTemplate.send(queue,
-								MessageBuilder.withPayload(payload).build());
-					}
-				});
-	}
+                    @Override
+                    public void onSuccess(CreateQueueRequest request,
+                                          CreateQueueResult createQueueResult) {
+                        queueMessagingTemplate.send(queue,
+                                MessageBuilder.withPayload(payload).build());
+                    }
+                });
+    }
 }
