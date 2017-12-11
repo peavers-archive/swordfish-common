@@ -11,7 +11,6 @@ import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 public class QueueMessageServiceImpl implements QueueMessageService {
 
@@ -32,8 +31,7 @@ public class QueueMessageServiceImpl implements QueueMessageService {
 				new AsyncHandler<CreateQueueRequest, CreateQueueResult>() {
 					@Override
 					public void onError(Exception exception) {
-						log.warn("something went wrong with the queue creation {}",
-								exception.getLocalizedMessage());
+
 					}
 
 					@Override
