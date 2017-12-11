@@ -2,3 +2,4 @@ rootProject.name = 'swordfish-common'
 
 include 'json'
 include 'notification'
+include 'queue'

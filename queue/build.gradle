@@ -1,0 +1,7 @@
+jar {
+    baseName = 'queue'
+}
+
+dependencies {
+    compile('org.springframework.cloud:spring-cloud-aws-messaging')
+}
