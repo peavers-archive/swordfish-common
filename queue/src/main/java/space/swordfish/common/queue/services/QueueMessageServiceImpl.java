@@ -17,7 +17,6 @@ public class QueueMessageServiceImpl implements QueueMessageService {
     private QueueMessagingTemplate queueMessagingTemplate;
 
     @Autowired
-    @Qualifier(value = "space.swordfish.common.queue.configuration.AmazonConfig")
     private AmazonSQSAsync amazonSQSAsync;
 
     @Override
