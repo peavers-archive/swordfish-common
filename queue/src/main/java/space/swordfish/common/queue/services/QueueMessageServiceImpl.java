@@ -5,6 +5,7 @@ import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.CreateQueueResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ public class QueueMessageServiceImpl implements QueueMessageService {
     private QueueMessagingTemplate queueMessagingTemplate;
 
     @Autowired
+    @Qualifier(value = "space.swordfish.common.queue.configuration.AmazonConfig")
     private AmazonSQSAsync amazonSQSAsync;
 
     @Override
