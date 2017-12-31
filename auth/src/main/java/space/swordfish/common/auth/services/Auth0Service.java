@@ -10,6 +10,8 @@ public interface Auth0Service {
 
     String getUserProfilePicture(String userId);
 
+    User getUser(String userId);
+
     void updateUser(String userId, User data);
 
 }

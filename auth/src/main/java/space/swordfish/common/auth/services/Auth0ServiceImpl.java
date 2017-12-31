@@ -111,13 +111,13 @@ public class Auth0ServiceImpl implements Auth0Service {
 
 
     /**
-     * Private helper method to get the User object from auth0. This shouldn't be exposed
-     * but rather write helper methods that make use of it.
+     * Private helper method to get the User object from auth0.
      *
      * @param userId String valid user ID.
      * @return User
      */
-    private User getUser(String userId) {
+    @Override
+    public User getUser(String userId) {
         ManagementAPI managementAPI = getManagementAPI();
         if (userId.equals("unknown")) {
             return null;
