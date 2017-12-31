@@ -25,161 +25,158 @@ import java.util.Objects;
 @Component
 public class Auth0ServiceImpl implements Auth0Service {
 
-	@Value("${auth0.issuer}")
-	private String domain;
+    @Value("${auth0.issuer}")
+    private String domain;
 
-	@Value("${auth0.management.clientId}")
-	private String clientId;
+    @Value("${auth0.management.clientId}")
+    private String clientId;
 
-	@Value("${auth0.management.clientSecret}")
-	private String clientSecret;
+    @Value("${auth0.management.clientSecret}")
+    private String clientSecret;
 
-	@Value("${auth0.management.audience}")
-	private String audience;
+    @Value("${auth0.management.audience}")
+    private String audience;
 
-	@Value("${auth0.management.grantType}")
-	private String grantType;
+    @Value("${auth0.management.grantType}")
+    private String grantType;
 
-	/**
-	 * Gets a valid user ID from auth0 based on a JWT auth token.
-	 *
-	 * @param token String JWT Token to get the user ID from
-	 * @return String representing the UserID.
-	 */
-	@Override
-	public String getUserId(String token) {
-		DecodedJWT jwt = JWT.decode(token);
+    /**
+     * Gets a valid user ID from auth0 based on a JWT auth token.
+     *
+     * @param token String JWT Token to get the user ID from
+     * @return String representing the UserID.
+     */
+    @Override
+    public String getUserId(String token) {
+        DecodedJWT jwt = JWT.decode(token);
 
-		return jwt.getSubject();
-	}
+        return jwt.getSubject();
+    }
 
-	/**
-	 * Gets the users name from auth0
-	 *
-	 * @param userId String valid user ID.
-	 * @return String name of the user
-	 */
-	@Override
-	public String getUserName(String userId) {
-		if (userId.equals("unknown")) {
-			return null;
-		}
+    /**
+     * Gets the users name from auth0
+     *
+     * @param userId String valid user ID.
+     * @return String name of the user
+     */
+    @Override
+    public String getUserName(String userId) {
+        if (userId.equals("unknown")) {
+            return null;
+        }
 
-		User user = getUser(userId);
+        User user = getUser(userId);
 
-		return user != null ? user.getName() : null;
-	}
+        return user != null ? user.getName() : null;
+    }
 
-	/**
-	 * Gets the users avatar/picture from auth0
-	 *
-	 * @param userId String valid user ID.
-	 * @return String URL of the avatar/picture
-	 */
-	@Override
-	public String getUserProfilePicture(String userId) {
-		if (userId.equals("unknown")) {
-			return null;
-		}
+    /**
+     * Gets the users avatar/picture from auth0
+     *
+     * @param userId String valid user ID.
+     * @return String URL of the avatar/picture
+     */
+    @Override
+    public String getUserProfilePicture(String userId) {
+        if (userId.equals("unknown")) {
+            return null;
+        }
 
-		User user = getUser(userId);
+        User user = getUser(userId);
 
-		return user != null ? user.getPicture() : null;
-	}
+        return user != null ? user.getPicture() : null;
+    }
 
-	/**
-	 * Private helper method to get the User object from auth0. This shouldn't be exposed
-	 * but rather write helper methods that make use of it.
-	 *
-	 * @param userId String valid user ID.
-	 * @return User
-	 */
-	private User getUser(String userId) {
-		ManagementAPI managementAPI = getManagementAPI();
-		if (userId.equals("unknown")) {
-			return null;
-		}
+    /**
+     * Valid user data should be passed in, only containing information that you want to
+     * update. Works like a dirty PATCH method, this is how the auth0 SDK is written. Not
+     * ideal. Again don't expose this directly but rather use as a wrapper.
+     *
+     * @param userId String valid user ID.
+     * @param data   User data to update
+     */
+    @Override
+    public void updateUser(String userId, User data) {
+        ManagementAPI managementAPI = getManagementAPI();
+        Request request = managementAPI.users().update(userId, data);
 
-		Request<User> request = managementAPI.users().get(userId, null);
+        try {
+            request.execute();
+        } catch (APIException exception) {
+            log.error("APIException {}", exception);
+        } catch (Auth0Exception exception) {
+            log.error("Auth0Exception {}", exception);
+        }
+    }
 
-		try {
-			return request.execute();
-		}
-		catch (APIException exception) {
-			log.error("APIException {}", exception);
-		}
-		catch (Auth0Exception exception) {
-			log.error("Auth0Exception {}", exception);
-		}
 
-		return null;
-	}
+    /**
+     * Private helper method to get the User object from auth0. This shouldn't be exposed
+     * but rather write helper methods that make use of it.
+     *
+     * @param userId String valid user ID.
+     * @return User
+     */
+    private User getUser(String userId) {
+        ManagementAPI managementAPI = getManagementAPI();
+        if (userId.equals("unknown")) {
+            return null;
+        }
 
-	/**
-	 * Valid user data should be passed in, only containing information that you want to
-	 * update. Works like a dirty PATCH method, this is how the auth0 SDK is written. Not
-	 * ideal. Again don't expose this directly but rather use as a wrapper.
-	 *
-	 * @param userId String valid user ID.
-	 * @param data User data to update
-	 */
-	private void updateUser(String userId, User data) {
-		ManagementAPI managementAPI = getManagementAPI();
-		Request request = managementAPI.users().update(userId, data);
+        Request<User> request = managementAPI.users().get(userId, null);
 
-		try {
-			request.execute();
-		}
-		catch (APIException exception) {
-			log.error("APIException {}", exception);
-		}
-		catch (Auth0Exception exception) {
-			log.error("Auth0Exception {}", exception);
-		}
-	}
+        try {
+            return request.execute();
+        } catch (APIException exception) {
+            log.error("APIException {}", exception);
+        } catch (Auth0Exception exception) {
+            log.error("Auth0Exception {}", exception);
+        }
 
-	/**
-	 * Create a fresh auth0 management token
-	 *
-	 * @return String management token
-	 */
-	private String getManagementToken() {
-		TokenInput tokenInput = TokenInput.builder().grantType(grantType)
-				.audience(audience).clientId(clientId).clientSecret(clientSecret).build();
+        return null;
+    }
 
-		ObjectMapper mapper = new ObjectMapper();
+    /**
+     * Create a fresh auth0 management token
+     *
+     * @return String management token
+     */
+    private String getManagementToken() {
+        TokenInput tokenInput = TokenInput.builder().grantType(grantType)
+                .audience(audience).clientId(clientId).clientSecret(clientSecret).build();
 
-		try {
-			String token = mapper.writeValueAsString(tokenInput);
+        ObjectMapper mapper = new ObjectMapper();
 
-			log.info(token);
+        try {
+            String token = mapper.writeValueAsString(tokenInput);
 
-			HttpResponse<String> response = Unirest.post(domain + "oauth/token")
-					.header("content-type", "application/json").body(token).asString();
+            log.info(token);
 
-			if (response.getStatus() != 200) {
-				throw new AccessDeniedException(response.getBody());
-			}
+            HttpResponse<String> response = Unirest.post(domain + "oauth/token")
+                    .header("content-type", "application/json").body(token).asString();
 
-			return mapper.readValue(response.getBody(), TokenResponse.class)
-					.getAccessToken();
+            if (response.getStatus() != 200) {
+                throw new AccessDeniedException(response.getBody());
+            }
 
-		}
-		catch (UnirestException | IOException e) {
-			e.printStackTrace();
-		}
+            return mapper.readValue(response.getBody(), TokenResponse.class)
+                    .getAccessToken();
 
-		return null;
-	}
+        } catch (UnirestException | IOException e) {
+            e.printStackTrace();
+        }
 
-	/**
-	 * The actually auth0 entry point into the management API. Will create it's own token
-	 * as required.
-	 *
-	 * @return ManagementAPI
-	 */
-	private ManagementAPI getManagementAPI() {
-		return new ManagementAPI(domain, Objects.requireNonNull(getManagementToken()));
-	}
+        return null;
+    }
+
+    /**
+     * The actually auth0 entry point into the management API. Will create it's own token
+     * as required.
+     *
+     * @return ManagementAPI
+     */
+    private ManagementAPI getManagementAPI() {
+        return new ManagementAPI(domain, Objects.requireNonNull(getManagementToken()));
+    }
 
 }

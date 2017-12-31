@@ -1,11 +1,15 @@
 package space.swordfish.common.auth.services;
 
+import com.auth0.json.mgmt.users.User;
+
 public interface Auth0Service {
 
-	String getUserId(String token);
+    String getUserId(String token);
 
-	String getUserName(String userId);
+    String getUserName(String userId);
 
-	String getUserProfilePicture(String userId);
+    String getUserProfilePicture(String userId);
+
+    void updateUser(String userId, User data);
 
 }
