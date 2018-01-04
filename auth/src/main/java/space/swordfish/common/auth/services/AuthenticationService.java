@@ -8,6 +8,4 @@ public interface AuthenticationService {
     HttpEntity<String> addAuthenticationHeader();
 
     String getCurrentAuth0Token();
-
-    User getCurrentAuth0User();
 }

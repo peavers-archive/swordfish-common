@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface Auth0Service {
 
-    String getUserId(String token);
+    String getUserIdFromToken(String token);
 
     String getUserName(String userId);
 

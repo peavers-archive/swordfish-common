@@ -54,7 +54,7 @@ public class Auth0ServiceImpl implements Auth0Service {
      * @return String representing the UserID.
      */
     @Override
-    public String getUserId(String token) {
+    public String getUserIdFromToken(String token) {
         DecodedJWT jwt = JWT.decode(token);
 
         return jwt.getSubject();

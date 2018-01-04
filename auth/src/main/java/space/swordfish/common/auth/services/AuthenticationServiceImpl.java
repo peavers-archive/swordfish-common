@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 @Component
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    @Autowired
-    private Auth0Service auth0Service;
-
     @Override
     public HttpEntity<String> addAuthenticationHeader() {
         String token = getCurrentAuth0Token();
@@ -40,16 +37,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         return null;
-    }
-
-    @Override
-    public User getCurrentAuth0User() {
-        String currentAuth0Token = getCurrentAuth0Token();
-        String userId = auth0Service.getUserId(currentAuth0Token);
-
-        log.info("currentAuth0Token {}", currentAuth0Token);
-        log.info("userId {}", userId);
-
-        return auth0Service.getUser(userId);
     }
 }
