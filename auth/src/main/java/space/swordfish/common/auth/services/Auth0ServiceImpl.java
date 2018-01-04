@@ -264,14 +264,14 @@ public class Auth0ServiceImpl implements Auth0Service {
     /**
      * Returns a decrypted string
      *
-     * @param privateData String
+     * @param data String
      * @return String
      */
-    private String decrypt(String privateData) {
+    private String decrypt(String data) {
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
         textEncryptor.setPasswordCharArray(seed.toCharArray());
 
-        return textEncryptor.decrypt(privateData);
+        return textEncryptor.decrypt(data);
     }
 
 }
