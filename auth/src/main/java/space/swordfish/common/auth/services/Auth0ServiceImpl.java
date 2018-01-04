@@ -12,18 +12,25 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.extern.slf4j.Slf4j;
+import org.jasypt.util.text.BasicTextEncryptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import space.swordfish.common.auth.domain.TokenInput;
 import space.swordfish.common.auth.domain.TokenResponse;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.file.AccessDeniedException;
+import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
 @Component
 public class Auth0ServiceImpl implements Auth0Service {
+
+    @Value("${auth0.jasypt.seed}")
+    private String seed;
 
     @Value("${auth0.issuer}")
     private String domain;
@@ -137,6 +144,68 @@ public class Auth0ServiceImpl implements Auth0Service {
     }
 
     /**
+     * Get a single object from the user meta data object. Decrypts values as they
+     * come out.
+     *
+     * @param key String name of the key to get data from
+     * @return String
+     */
+    @Override
+    public String getEncryptedUserMetaByKey(String userId, String key) {
+        User user = getUser(userId);
+
+        String value = (String) user.getUserMetadata().get(key);
+
+        return decrypt(value);
+    }
+
+    /**
+     * Preforms basic encryption using a seed before sending data to Auth0
+     *
+     * @param userId Current user
+     * @param data   Map of key/values to push to the user data
+     */
+    @Override
+    public void setEncryptedUserMetaData(String userId, Map<String, Object> data) {
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            entry.setValue(encrypt((String) entry.getValue()));
+        }
+
+        com.auth0.json.mgmt.users.User auth0User = new com.auth0.json.mgmt.users.User(null);
+        auth0User.setUserMetadata(data);
+
+        updateUser(userId, auth0User);
+    }
+
+    /**
+     * Return standard user meta data
+     *
+     * @param userId
+     * @param key
+     * @return
+     */
+    @Override
+    public String getUserMetaByKey(String userId, String key) {
+        User user = getUser(userId);
+
+        return (String) user.getUserMetadata().get(key);
+    }
+
+    /**
+     * Set meta data without encrypting it
+     *
+     * @param userId
+     * @param data
+     */
+    @Override
+    public void setUserMetaData(String userId, Map<String, Object> data) {
+        com.auth0.json.mgmt.users.User auth0User = new com.auth0.json.mgmt.users.User(null);
+        auth0User.setUserMetadata(data);
+
+        updateUser(userId, auth0User);
+    }
+
+    /**
      * Create a fresh auth0 management token
      *
      * @return String management token
@@ -177,6 +246,32 @@ public class Auth0ServiceImpl implements Auth0Service {
      */
     private ManagementAPI getManagementAPI() {
         return new ManagementAPI(domain, Objects.requireNonNull(getManagementToken()));
+    }
+
+    /**
+     * Encrypts a string
+     *
+     * @param data String
+     * @return String
+     */
+    private String encrypt(String data) {
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPasswordCharArray(seed.toCharArray());
+
+        return textEncryptor.encrypt(data);
+    }
+
+    /**
+     * Returns a decrypted string
+     *
+     * @param privateData String
+     * @return String
+     */
+    private String decrypt(String privateData) {
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPasswordCharArray(seed.toCharArray());
+
+        return textEncryptor.decrypt(privateData);
     }
 
 }
