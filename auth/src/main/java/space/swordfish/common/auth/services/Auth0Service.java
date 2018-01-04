@@ -23,5 +23,4 @@ public interface Auth0Service {
     User getUser(String userId);
 
     void updateUser(String userId, User data);
-
 }

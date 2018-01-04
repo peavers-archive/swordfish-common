@@ -44,6 +44,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User getCurrentAuth0User() {
-        return auth0Service.getUser(auth0Service.getUserId(getCurrentAuth0Token()));
+        String currentAuth0Token = getCurrentAuth0Token();
+        String userId = auth0Service.getUserId(currentAuth0Token);
+
+        log.info("currentAuth0Token {}", currentAuth0Token);
+        log.info("userId {}", userId);
+
+        return auth0Service.getUser(userId);
     }
 }
