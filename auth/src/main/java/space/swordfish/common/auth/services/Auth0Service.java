@@ -20,7 +20,6 @@ public interface Auth0Service {
 
     void setUserMetaData(String userId, Map<String, Object> data);
 
-
     User getUser(String userId);
 
     void updateUser(String userId, User data);
