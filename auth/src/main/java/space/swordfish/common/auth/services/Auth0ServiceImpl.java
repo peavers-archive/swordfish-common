@@ -1,9 +1,12 @@
 package space.swordfish.common.auth.services;
 
 import com.auth0.client.mgmt.ManagementAPI;
+import com.auth0.client.mgmt.UsersEntity;
+import com.auth0.client.mgmt.filter.UserFilter;
 import com.auth0.exception.APIException;
 import com.auth0.exception.Auth0Exception;
 import com.auth0.json.mgmt.users.User;
+import com.auth0.json.mgmt.users.UsersPage;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.net.Request;
@@ -13,14 +16,12 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.extern.slf4j.Slf4j;
 import org.jasypt.util.text.BasicTextEncryptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import space.swordfish.common.auth.domain.TokenInput;
 import space.swordfish.common.auth.domain.TokenResponse;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.nio.file.AccessDeniedException;
 import java.util.Map;
 import java.util.Objects;
@@ -134,6 +135,28 @@ public class Auth0ServiceImpl implements Auth0Service {
 
         try {
             return request.execute();
+        } catch (APIException exception) {
+            log.error("APIException {}", exception);
+        } catch (Auth0Exception exception) {
+            log.error("Auth0Exception {}", exception);
+        }
+
+        return null;
+    }
+
+    @Override
+    public Iterable<User> getAllUsers() {
+        ManagementAPI managementAPI = getManagementAPI();
+
+        UsersEntity users = managementAPI.users();
+
+        UserFilter filter = new UserFilter();
+        filter.withFields("user_metadata", true);
+        Request<UsersPage> request = users.list(filter);
+
+        try {
+            UsersPage usersPage = request.execute();
+            return usersPage.getItems();
         } catch (APIException exception) {
             log.error("APIException {}", exception);
         } catch (Auth0Exception exception) {

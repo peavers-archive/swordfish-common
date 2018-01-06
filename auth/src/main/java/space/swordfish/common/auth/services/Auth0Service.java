@@ -22,5 +22,7 @@ public interface Auth0Service {
 
     User getUser(String userId);
 
+    Iterable<User> getAllUsers();
+
     void updateUser(String userId, User data);
 }
