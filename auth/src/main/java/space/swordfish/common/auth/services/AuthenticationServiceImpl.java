@@ -1,6 +1,7 @@
 package space.swordfish.common.auth.services;
 
 import com.auth0.spring.security.api.authentication.JwtAuthentication;
+import com.github.jasminb.jsonapi.JSONAPIDocument;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
 import space.swordfish.common.auth.domain.User;
 import space.swordfish.common.auth0.services.Auth0Service;
 import space.swordfish.common.json.services.JsonTransformService;
+
+import java.util.List;
 
 
 @Slf4j
@@ -63,5 +66,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         ResponseEntity<String> exchange = restTemplate.exchange("http://user-service/users/{id}", HttpMethod.GET, addAuthenticationHeader(), reference, userId);
 
         return jsonTransformService.read(User.class, exchange.getBody());
+    }
+
+    @Override
+    public Iterable<User> getLocalUsers() {
+        ParameterizedTypeReference<String> reference = new ParameterizedTypeReference<String>() {
+        };
+
+        ResponseEntity<String> exchange = restTemplate.exchange("http://user-service/users/", HttpMethod.GET, addAuthenticationHeader(), reference);
+
+        JSONAPIDocument<List<User>> listJSONAPIDocument = jsonTransformService.readList(User.class, exchange.getBody());
+
+        return listJSONAPIDocument.get();
     }
 }
