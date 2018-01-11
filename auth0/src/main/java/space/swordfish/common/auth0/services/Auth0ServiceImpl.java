@@ -1,4 +1,4 @@
-package space.swordfish.common.auth.services;
+package space.swordfish.common.auth0.services;
 
 import com.auth0.client.mgmt.ManagementAPI;
 import com.auth0.client.mgmt.UsersEntity;
@@ -18,8 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import space.swordfish.common.auth.domain.TokenInput;
-import space.swordfish.common.auth.domain.TokenResponse;
+import space.swordfish.common.auth0.domain.TokenInput;
+import space.swordfish.common.auth0.domain.TokenResponse;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -49,7 +49,7 @@ public class Auth0ServiceImpl implements Auth0Service {
     private String grantType;
 
     /**
-     * Gets a valid user ID from auth0 based on a JWT auth token.
+     * Gets a valid user ID from auth0 based on a JWT auth0 token.
      *
      * @param token String JWT Token to get the user ID from
      * @return String representing the UserID.
@@ -296,5 +296,4 @@ public class Auth0ServiceImpl implements Auth0Service {
 
         return textEncryptor.decrypt(data);
     }
-
 }

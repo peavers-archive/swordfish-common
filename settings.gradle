@@ -1,5 +1,6 @@
 rootProject.name = 'swordfish-common'
 
+include 'auth0'
 include 'auth'
 include 'json'
 include 'notification'

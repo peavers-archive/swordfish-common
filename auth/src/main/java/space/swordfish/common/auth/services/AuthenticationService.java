@@ -1,13 +1,14 @@
 package space.swordfish.common.auth.services;
 
-import com.auth0.json.mgmt.users.User;
 import org.springframework.http.HttpEntity;
+import space.swordfish.common.auth.domain.User;
 
 public interface AuthenticationService {
 
     HttpEntity<String> addAuthenticationHeader();
 
-    String getCurrentAuth0Token();
+    String getCurrentToken();
 
-    User getCurrentAuth0User();
+    User getCurrentUser();
+
 }

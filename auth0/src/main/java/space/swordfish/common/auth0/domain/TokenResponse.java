@@ -1,4 +1,4 @@
-package space.swordfish.common.auth.domain;
+package space.swordfish.common.auth0.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

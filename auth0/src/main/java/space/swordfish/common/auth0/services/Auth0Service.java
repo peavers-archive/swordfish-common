@@ -1,4 +1,4 @@
-package space.swordfish.common.auth.services;
+package space.swordfish.common.auth0.services;
 
 import com.auth0.json.mgmt.users.User;
 

@@ -1,4 +1,4 @@
-package space.swordfish.common.auth.configuration;
+package space.swordfish.common.auth0.configuration;
 
 import com.auth0.client.auth.AuthAPI;
 import org.springframework.beans.factory.annotation.Value;
