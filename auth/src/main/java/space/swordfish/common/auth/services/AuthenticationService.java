@@ -13,4 +13,5 @@ public interface AuthenticationService {
 
     Iterable<User> getLocalUsers();
 
+    User getLocalUserById(String id);
 }

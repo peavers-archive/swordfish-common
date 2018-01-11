@@ -79,4 +79,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return listJSONAPIDocument.get();
     }
+
+    @Override
+    public User getLocalUserById(String id) {
+        ParameterizedTypeReference<String> reference = new ParameterizedTypeReference<String>() {
+        };
+
+        ResponseEntity<String> exchange = restTemplate.exchange("http://user-service/users/{id}", HttpMethod.GET, addAuthenticationHeader(), reference, id);
+
+        return jsonTransformService.read(User.class, exchange.getBody());
+    }
 }
