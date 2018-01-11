@@ -1,5 +1,5 @@
 jar {
-    baseName = 'auth0'
+    baseName = 'auth'
 }
 
 dependencies {
