@@ -6,6 +6,5 @@ dependencies {
     compile('com.auth0:auth0-spring-security-api:1.0.0-rc.3')
     compile('com.auth0:auth0:1.5.0')
 
-    compile project(':json')
     compile project(':auth0')
 }

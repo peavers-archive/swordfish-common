@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import space.swordfish.common.auth.domain.User;
 import space.swordfish.common.auth0.services.Auth0Service;
-import space.swordfish.common.json.services.JsonTransformService;
 
 import java.util.List;
 
@@ -28,10 +27,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private RestTemplate restTemplate;
 
     @Autowired
-    private JsonTransformService jsonTransformService;
-
-    @Autowired
     private Auth0Service auth0Service;
+
+    private space.swordfish.common.auth.services.JsonTransformService jsonTransformService;
 
     @Override
     public HttpEntity<String> addAuthenticationHeader() {
