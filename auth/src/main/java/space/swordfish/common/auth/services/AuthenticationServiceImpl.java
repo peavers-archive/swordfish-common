@@ -29,7 +29,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private Auth0Service auth0Service;
 
-    private space.swordfish.common.auth.services.JsonTransformService jsonTransformService;
+    // Old school.
+    private JsonTransformService jsonTransformService = new JsonTransformService();
 
     @Override
     public HttpEntity<String> addAuthenticationHeader() {
